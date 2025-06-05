@@ -1,0 +1,2604 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaboration Deck Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        .slide {
+            /* Standard 16:9 slide size, scalable for web and print */
+            width: 1280px;
+            height: 720px;
+            max-width: 100vw;
+            max-height: 100vh;
+            aspect-ratio: 16 / 9;
+            margin: 0 auto 40px auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px 64px;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always; /* For print/PDF: each slide on a new page */
+            break-after: page;
+        }
+        @media (max-width: 1400px) {
+            .slide {
+                width: 100vw;
+                height: calc(100vw * 9 / 16);
+                padding: 24px 8vw;
+            }
+        }
+        @media (max-width: 900px) {
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 60vw;
+                padding: 12px 2vw;
+            }
+        }
+        /* Print styles for slide export */
+        @media print {
+            body {
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .slide {
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                overflow: hidden !important;
+                position: relative !important;
+            }
+            .download-section, .opening-slide, .platform-section-slide {
+                page-break-after: always !important;
+                break-after: page !important;
+            }
+        }
+        .slide-header {
+            text-align: left;
+            margin-bottom: 32px;
+        }
+        .video-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .video-title-translation {
+            margin-bottom: 12px;
+            color: #64748b;
+            font-style: normal;
+        }
+        .translation-label {
+            color: inherit;
+            font-size: 1em;
+            font-style: normal;
+            font-weight: 500;
+            margin-right: 6px;
+        }
+        .creator-info-box {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 32px;
+            padding: 6px 20px 6px 20px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            margin-left: 8px;
+            margin-right: 8px;
+            box-shadow: 0 2px 8px rgba(30,41,59,0.04);
+            display: inline-block;
+            max-width: 95vw;
+            min-width: 0;
+            /* Box will only be as wide as its content */
+        }
+        .creator-info {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            margin: 0;
+            width: auto;
+        }
+        .creator-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .profile-pic {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .creator-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #475569;
+        }
+        .subscriber-count {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-style: italic;
+            margin-top: 2px;
+        }
+        .platform-badge {
+            background: #3b82f6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .video-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        .embed {
+            width: 100%;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        .embed-horizontal {
+            aspect-ratio: 16 / 9;
+            max-width: 700px;
+        }
+        .embed-vertical {
+            aspect-ratio: 9 / 16;
+            max-width: 360px;
+            margin: 0 auto;
+            padding: 0;
+            border-radius: 12px;
+            background: #000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        @media (max-width: 600px) {
+            .embed-vertical {
+                max-width: 98vw;
+                border-radius: 8px;
+            }
+        }
+        .embed iframe,
+        .embed blockquote.tiktok-embed {
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+            background: #000;
+        }
+        
+        /* Platform breakdown table styles */
+        .platform-breakdown {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .platform-breakdown h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .breakdown-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #f8fafc;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .breakdown-table th {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .breakdown-table td {
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1e293b;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .breakdown-table tr:last-child td {
+            border-bottom: none;
+        }
+        .breakdown-platform-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .breakdown-platform-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .breakdown-platform-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: #475569;
+        }
+        
+        .video-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .video-meta .publish-date {
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 500;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .video-meta .content-type {
+            background: #ecfdf5;
+            color: #059669;
+            padding: 6px 14px;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .stats-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+        .stat-context {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-style: italic;
+        }
+        .download-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+        }
+        .link-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Summary slide styles */
+        .summary-slide {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 24px;
+            padding: 48px;
+            margin: 40px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            color: white;
+        }
+        .summary-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 48px;
+            color: white;
+        }
+        .summary-table th, .summary-table td {
+            color: white;
+        }
+        .platform-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 40px;
+        }
+        .platform-icon svg {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        
+        .icon-row th {
+            background: transparent !important;
+            border: none !important;
+            padding: 20px 20px 10px 80px;
+            text-align: center;
+        }
+        
+        /* Platform section slide icons */
+        .platform-section-icon svg {
+            width: 60px;
+            height: 60px;
+            fill: white;
+        }
+        
+        /* Summary table icons - dark for visibility on light background */
+        .summary-table .platform-icon svg {
+            fill: #475569;
+        }
+        
+        .youtube-icon { }
+        .shorts-icon { }
+        .ig-icon { }
+        .instagram-icon { }
+        .tiktok-icon { }
+        
+        .summary-table th {
+            background: #f8fafc;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .summary-table td {
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .summary-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            text-align: left !important;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        
+        .total-column {
+            background: #f1f5f9 !important;
+            color: #0f172a !important;
+            font-weight: 800;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .video-title {
+                font-size: 1.8rem;
+            }
+            .embed iframe {
+                height: 250px;
+            }
+            .stats-header {
+                text-align: center;
+            }
+            .creator-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .summary-title {
+                font-size: 2rem;
+            }
+            .platform-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 1.2rem;
+                margin-left: 40px;
+            }
+            .platform-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+            .summary-table th,
+            .summary-table td {
+                padding: 12px 8px;
+                font-size: 0.9rem;
+            }
+            .metric-label {
+                font-size: 1rem !important;
+            }
+        }
+        .tiktok-embed {
+            margin: 0 auto;
+            max-width: 605px;
+            min-width: 325px;
+        }
+        .tiktok-embed iframe {
+            border-radius: 12px;
+        }
+        .social-preview {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.2s;
+            min-height: 120px;
+        }
+        .social-preview:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+        .social-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        .instagram-preview .social-icon {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            color: white;
+        }
+        .tiktok-preview .social-icon {
+            background: #000000;
+            color: white;
+        }
+        .social-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+        .social-text {
+            flex: 1;
+        }
+        .social-text h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .social-text p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .social-link {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .social-link:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        
+        /* Opening slide styles - Consistent with deck */
+        .opening-slide {
+            background: #f8fafc;
+            color: #0f172a;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .opening-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: #0f172a;
+            letter-spacing: -1px;
+        }
+        .opening-subtitle {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 48px;
+        }
+        .data-date {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 16px 32px;
+            border-radius: 50px;
+            margin-bottom: 0;
+        }
+        /* Platform section slides - Consistent with summary slide */
+        .platform-section-slide {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+        .platform-section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: white;
+            letter-spacing: -1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .platform-section-icon {
+            margin-bottom: 8px;
+        }
+        .platform-section-icon svg {
+            width: 60px;
+            height: 60px;
+            display: block;
+            margin: 0 auto;
+            fill: white;
+        }
+        .platform-section-count {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #e0e7ef;
+        }
+        
+        /* Watch on buttons */
+        .watch-on-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #475569;
+            transition: all 0.2s;
+            height: 36px;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+        .watch-on-btn:hover {
+            border-color: #3b82f6;
+            background: #f1f5f9;
+            transform: translateY(-1px);
+        }
+        .watch-on-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .watch-on-icon svg {
+            width: 14px;
+            height: 14px;
+            fill: #475569;
+        }
+        .collab-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #3b82f6;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 0 14px;
+            border-radius: 12px;
+            min-width: 32px;
+            height: 2.2em;
+            text-align: center;
+            flex-shrink: 0;
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Opening slide -->
+    <div class="opening-slide">
+        <h1 class="opening-title">Creator Collaboration Impact Report</h1>
+        <p class="opening-subtitle">Comprehensive analysis of creator collaborations across platforms</p>
+        <div class="data-date">Data extracted on June 05, 2025</div>
+    </div>
+    
+    <!-- Summary slide -->
+    <div class="slide">
+        <div class="summary-slide">
+            <h1 class="summary-title">Total Reach</h1>
+            
+            <table class="summary-table">
+                <thead>
+                    <tr class="icon-row">
+                        <th></th> <!-- Empty cell for Metric column -->
+                        
+                        
+                        <th>
+                            <div class="platform-icon youtube-icon">
+                                <svg width="800px" height="800px" viewBox="0 -3 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <title>youtube [#168]</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+
+</defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dribbble-Light-Preview" transform="translate(-300.000000, -7442.000000)" fill="currentColor">
+            <g id="icons" transform="translate(56.000000, 160.000000)">
+                <path d="M251.988432,7291.58588 L251.988432,7285.97425 C253.980638,7286.91168 255.523602,7287.8172 257.348463,7288.79353 C255.843351,7289.62824 253.980638,7290.56468 251.988432,7291.58588 M263.090998,7283.18289 C262.747343,7282.73013 262.161634,7282.37809 261.538073,7282.26141 C259.705243,7281.91336 248.270974,7281.91237 246.439141,7282.26141 C245.939097,7282.35515 245.493839,7282.58153 245.111335,7282.93357 C243.49964,7284.42947 244.004664,7292.45151 244.393145,7293.75096 C244.556505,7294.31342 244.767679,7294.71931 245.033639,7294.98558 C245.376298,7295.33761 245.845463,7295.57995 246.384355,7295.68865 C247.893451,7296.0008 255.668037,7296.17532 261.506198,7295.73552 C262.044094,7295.64178 262.520231,7295.39147 262.895762,7295.02447 C264.385932,7293.53455 264.28433,7285.06174 263.090998,7283.18289" id="youtube-[#168]">
+
+</path>
+            </g>
+        </g>
+    </g>
+</svg>
+                            </div>
+                        </th>
+                        
+                        
+                        
+                        <th>
+                            <div class="platform-icon shorts-icon">
+                                <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 xml:space="preserve">
+<g>
+	<path d="M7.25,22C5.458,22,4,20.542,4,18.75c0-1.229,0.686-2.342,1.789-2.903l3.241-1.429c0.14,0.684,0.746,1.2,1.471,1.2
+		c0.271,0,0.537-0.074,0.771-0.215l3.527-2.117c0.456-0.273,0.729-0.754,0.729-1.286s-0.272-1.013-0.729-1.286l-3.527-2.117
+		c-0.233-0.141-0.5-0.215-0.771-0.215C9.673,8.382,9,9.056,9,9.883v3.972l-2.313-0.405C5.13,13.177,4,11.831,4,10.25
+		c0-1.209,0.667-2.311,1.74-2.875l9.45-4.976C15.682,2.132,16.201,2,16.75,2C18.542,2,20,3.458,20,5.25
+		c0,1.229-0.686,2.342-1.789,2.903l-4.146,1.828l3.247,0.569C18.87,10.823,20,12.169,20,13.75c0,1.24-0.724,2.39-1.844,2.929
+		L8.81,21.601C8.321,21.868,7.803,22,7.25,22z"/>
+	<path d="M16.75,3C17.991,3,19,4.009,19,5.25c0,0.836-0.459,1.594-1.2,1.991l-1.121,0.494L13.854,8.98l-2.067-1.24
+		c-0.389-0.234-0.834-0.357-1.286-0.357C9.122,7.382,8,8.504,8,9.883v2.782l-1.139-0.2C5.783,12.276,5,11.344,5,10.25
+		c0-0.836,0.462-1.599,1.207-1.99l9.476-4.989C16.012,3.091,16.371,3,16.75,3 M16.461,11.416l0.679,0.119
+		C18.217,11.724,19,12.656,19,13.75c0,0.859-0.501,1.655-1.276,2.027l-0.033,0.016l-0.032,0.017l-9.347,4.922
+		C7.989,20.91,7.632,21,7.25,21C6.009,21,5,19.991,5,18.75c0-0.836,0.459-1.594,1.2-1.991l1.121-0.494l1.255-0.553
+		c0.459,0.553,1.151,0.905,1.925,0.905c0.452,0,0.896-0.123,1.285-0.357l3.528-2.117c0.76-0.456,1.214-1.257,1.214-2.144
+		C16.528,11.8,16.505,11.604,16.461,11.416 M16.75,1c-0.73,0-1.42,0.185-2.025,0.515L5.275,6.49C3.925,7.2,3,8.62,3,10.25
+		c0,2.095,1.52,3.835,3.515,4.185l-1.18,0.52C3.95,15.66,3,17.095,3,18.75C3,21.095,4.905,23,7.25,23
+		c0.735,0,1.425-0.185,2.025-0.515l9.315-4.905c1.425-0.685,2.41-2.145,2.41-3.83c0-2.095-1.52-3.835-3.515-4.185l1.18-0.52
+		C20.05,8.34,21,6.905,21,5.25C21,2.905,19.095,1,16.75,1L16.75,1z M10.501,14.618c-0.261,0-0.501-0.208-0.501-0.501V9.883
+		c0-0.292,0.24-0.501,0.501-0.501c0.086,0,0.174,0.023,0.256,0.072l3.528,2.117c0.324,0.194,0.324,0.663,0,0.857l-3.528,2.117
+		C10.675,14.595,10.587,14.618,10.501,14.618L10.501,14.618z"/>
+</g>
+</svg>
+                            </div>
+                        </th>
+                        
+                        
+                        
+                        <th>
+                            <div class="platform-icon instagram-icon">
+                                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+<path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="currentColor"/>
+</svg>
+                            </div>
+                        </th>
+                        
+                        
+                        
+                        <th>
+                            <div class="platform-icon tiktok-icon">
+                                <svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,2H3A1,1,0,0,0,2,3V21a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2Zm-3.281,8.725h0c-.109.011-.219.016-.328.017A3.571,3.571,0,0,1,14.4,9.129v5.493a4.061,4.061,0,1,1-4.06-4.06c.085,0,.167.008.251.013v2a2.067,2.067,0,1,0-.251,4.119A2.123,2.123,0,0,0,12.5,14.649l.02-9.331h1.914A3.564,3.564,0,0,0,17.719,8.5Z"/></svg>
+                            </div>
+                        </th>
+                        
+                        
+                        <th></th> <!-- Empty cell for Total column -->
+                    </tr>
+                    <tr>
+                        <th class="metric-label">Metric</th>
+                        
+                        
+                        <th>YouTube</th>
+                        
+                        
+                        
+                        <th>Shorts</th>
+                        
+                        
+                        
+                        <th>Instagram</th>
+                        
+                        
+                        
+                        <th>TikTok</th>
+                        
+                        
+                        <th class="total-column">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="metric-label">Views</td>
+                        
+                        
+                        <td>42.1M</td>
+                        
+                        
+                        
+                        <td>29.9M</td>
+                        
+                        
+                        
+                        <td>61M</td>
+                        
+                        
+                        
+                        <td>116.4M</td>
+                        
+                        
+                        <td class="total-column">249.4M</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-label">Likes</td>
+                        
+                        
+                        <td>1.7M</td>
+                        
+                        
+                        
+                        <td>984.6K</td>
+                        
+                        
+                        
+                        <td>4.8M</td>
+                        
+                        
+                        
+                        <td>8.8M</td>
+                        
+                        
+                        <td class="total-column">16.3M</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-label">Comments</td>
+                        
+                        
+                        <td>84.4K</td>
+                        
+                        
+                        
+                        <td>39.5K</td>
+                        
+                        
+                        
+                        <td>38.8K</td>
+                        
+                        
+                        
+                        <td>176K</td>
+                        
+                        
+                        <td class="total-column">338.7K</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+    <!-- Platform section slide -->
+    <div class="platform-section-slide youtube">
+        <h1 class="platform-section-title">
+            <div class="platform-section-icon">
+                <svg width="800px" height="800px" viewBox="0 -3 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <title>youtube [#168]</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+
+</defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dribbble-Light-Preview" transform="translate(-300.000000, -7442.000000)" fill="currentColor">
+            <g id="icons" transform="translate(56.000000, 160.000000)">
+                <path d="M251.988432,7291.58588 L251.988432,7285.97425 C253.980638,7286.91168 255.523602,7287.8172 257.348463,7288.79353 C255.843351,7289.62824 253.980638,7290.56468 251.988432,7291.58588 M263.090998,7283.18289 C262.747343,7282.73013 262.161634,7282.37809 261.538073,7282.26141 C259.705243,7281.91336 248.270974,7281.91237 246.439141,7282.26141 C245.939097,7282.35515 245.493839,7282.58153 245.111335,7282.93357 C243.49964,7284.42947 244.004664,7292.45151 244.393145,7293.75096 C244.556505,7294.31342 244.767679,7294.71931 245.033639,7294.98558 C245.376298,7295.33761 245.845463,7295.57995 246.384355,7295.68865 C247.893451,7296.0008 255.668037,7296.17532 261.506198,7295.73552 C262.044094,7295.64178 262.520231,7295.39147 262.895762,7295.02447 C264.385932,7293.53455 264.28433,7285.06174 263.090998,7283.18289" id="youtube-[#168]">
+
+</path>
+            </g>
+        </g>
+    </g>
+</svg>
+            </div>
+            YouTube
+        </h1>
+        <p class="platform-section-count">7 Collaborations</p>
+    </div>
+    
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">1</span>
+                <span>HABLA HISPANA VS ESTADOS UNIDOS 🏀</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> Spanish-speaking vs United States 🏀
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/YZ7gOQ8piWHJELvXxq0p2rIb942UdvBCy27y6DwTxE2-t_y7Iemd4vM17QmLMJra82s5gxzlL_s=s800-c-k-c0x00ffffff-no-rj" alt="Fede profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Fede</span>
+                        
+                        <span class="subscriber-count">67.5M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-horizontal"><iframe width="100%" src="https://www.youtube.com/embed/OyyARwvQlu4" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: April 25, 2025</div>
+                    
+                    
+                    <div class="content-type">Live</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">25.5M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">882.4K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">47K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">2</span>
+                <span>LO QUE NO VISTE DEL PARTIDO CONTRA MRBEAST</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> WHAT YOU DIDN'T SEE FROM THE MATCH AGAINST MRBEAST
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/YZ7gOQ8piWHJELvXxq0p2rIb942UdvBCy27y6DwTxE2-t_y7Iemd4vM17QmLMJra82s5gxzlL_s=s800-c-k-c0x00ffffff-no-rj" alt="Fede profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Fede</span>
+                        
+                        <span class="subscriber-count">67.5M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-horizontal"><iframe width="100%" src="https://www.youtube.com/embed/jPAGOESjXHk" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: April 30, 2025</div>
+                    
+                    
+                    <div class="content-type">Video</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">5.3M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">262.7K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">19.3K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">3</span>
+                <span>MrBeast Me Invitó a sus Oficinas</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> MrBeast Invited Me to His Offices
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/alZ--DxDJfYQLF9UZ7s8q2tytDyFniBoj0-8bH27Ew5QTX5o3ultBNmfJmFqc05V2Wax-nkFKX8=s800-c-k-c0x00ffffff-no-rj" alt="Ibai profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Ibai</span>
+                        
+                        <span class="subscriber-count">13.1M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-horizontal"><iframe width="100%" src="https://www.youtube.com/embed/lUHlckT8a44" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: May 04, 2025</div>
+                    
+                    
+                    <div class="content-type">Video</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">5.2M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">189.6K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">2.3K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">4</span>
+                <span>Exposing MrBeast's BIGGEST Secrets..</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/KN9ZJ9iHcPcKGokxLlwTPhdWU6wPrTe7Lf_7g2lXhjpX6fc4240zD4uus5jP3LWrzgPPziDE=s800-c-k-c0x00ffffff-no-rj" alt="FaZe Rug profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">FaZe Rug</span>
+                        
+                        <span class="subscriber-count">27.8M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-horizontal"><iframe width="100%" src="https://www.youtube.com/embed/sEYupPUxyw8" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: May 04, 2025</div>
+                    
+                    
+                    <div class="content-type">Video</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">2.2M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">52.4K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">4.5K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">5</span>
+                <span>VIAJE PARA JUGAR CONTRA MRBEAST !! - Fernanfloo</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/ytc/AIdro_krZWidm2ZqWJuhvJ-tD054MwbRpjzt6tubu0JFx0L6ZD0=s800-c-k-c0x00ffffff-no-rj" alt="Fernan profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Fernan</span>
+                        
+                        <span class="subscriber-count">49.1M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-horizontal"><iframe width="100%" src="https://www.youtube.com/embed/rzk3jYxpdhM" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: May 05, 2025</div>
+                    
+                    
+                    <div class="content-type">Video</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">2.0M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">213.9K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">8.9K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">6</span>
+                <span>ME PELEE CON LOS STOKES TWINS</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> I FOUGHT WITH THE STOKES TWINS
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/ytc/AIdro_kSrl3Lh7r5LXy3trSiR5uXDC5OKswFgfPYTee262mNjv0=s800-c-k-c0x00ffffff-no-rj" alt="Rikcy Limon profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Rikcy Limon</span>
+                        
+                        <span class="subscriber-count">30M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-horizontal"><iframe width="100%" src="https://www.youtube.com/embed/xCBRUHzKaXg" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: May 02, 2025</div>
+                    
+                    
+                    <div class="content-type">Video</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">1.2M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">34.5K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">766</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">7</span>
+                <span>I Taught MrBeast How To Do A Keg Stand!</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/oHqvxQgRslfMc18DpmQyNC1eCLsX5E0YzfB0ZwLKbXVIr4o3sgoech_G790iyc2ZyKlzHE8r=s800-c-k-c0x00ffffff-no-rj" alt="Nick Nayersina profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Nick Nayersina</span>
+                        
+                        <span class="subscriber-count">1.1M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-horizontal"><iframe width="100%" src="https://www.youtube.com/embed/g5ShPAXdnNU" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: April 27, 2025</div>
+                    
+                    
+                    <div class="content-type">Video</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">575.8K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">40.4K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">1.7K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- Platform section slide -->
+    <div class="platform-section-slide shorts">
+        <h1 class="platform-section-title">
+            <div class="platform-section-icon">
+                <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 xml:space="preserve">
+<g>
+	<path d="M7.25,22C5.458,22,4,20.542,4,18.75c0-1.229,0.686-2.342,1.789-2.903l3.241-1.429c0.14,0.684,0.746,1.2,1.471,1.2
+		c0.271,0,0.537-0.074,0.771-0.215l3.527-2.117c0.456-0.273,0.729-0.754,0.729-1.286s-0.272-1.013-0.729-1.286l-3.527-2.117
+		c-0.233-0.141-0.5-0.215-0.771-0.215C9.673,8.382,9,9.056,9,9.883v3.972l-2.313-0.405C5.13,13.177,4,11.831,4,10.25
+		c0-1.209,0.667-2.311,1.74-2.875l9.45-4.976C15.682,2.132,16.201,2,16.75,2C18.542,2,20,3.458,20,5.25
+		c0,1.229-0.686,2.342-1.789,2.903l-4.146,1.828l3.247,0.569C18.87,10.823,20,12.169,20,13.75c0,1.24-0.724,2.39-1.844,2.929
+		L8.81,21.601C8.321,21.868,7.803,22,7.25,22z"/>
+	<path d="M16.75,3C17.991,3,19,4.009,19,5.25c0,0.836-0.459,1.594-1.2,1.991l-1.121,0.494L13.854,8.98l-2.067-1.24
+		c-0.389-0.234-0.834-0.357-1.286-0.357C9.122,7.382,8,8.504,8,9.883v2.782l-1.139-0.2C5.783,12.276,5,11.344,5,10.25
+		c0-0.836,0.462-1.599,1.207-1.99l9.476-4.989C16.012,3.091,16.371,3,16.75,3 M16.461,11.416l0.679,0.119
+		C18.217,11.724,19,12.656,19,13.75c0,0.859-0.501,1.655-1.276,2.027l-0.033,0.016l-0.032,0.017l-9.347,4.922
+		C7.989,20.91,7.632,21,7.25,21C6.009,21,5,19.991,5,18.75c0-0.836,0.459-1.594,1.2-1.991l1.121-0.494l1.255-0.553
+		c0.459,0.553,1.151,0.905,1.925,0.905c0.452,0,0.896-0.123,1.285-0.357l3.528-2.117c0.76-0.456,1.214-1.257,1.214-2.144
+		C16.528,11.8,16.505,11.604,16.461,11.416 M16.75,1c-0.73,0-1.42,0.185-2.025,0.515L5.275,6.49C3.925,7.2,3,8.62,3,10.25
+		c0,2.095,1.52,3.835,3.515,4.185l-1.18,0.52C3.95,15.66,3,17.095,3,18.75C3,21.095,4.905,23,7.25,23
+		c0.735,0,1.425-0.185,2.025-0.515l9.315-4.905c1.425-0.685,2.41-2.145,2.41-3.83c0-2.095-1.52-3.835-3.515-4.185l1.18-0.52
+		C20.05,8.34,21,6.905,21,5.25C21,2.905,19.095,1,16.75,1L16.75,1z M10.501,14.618c-0.261,0-0.501-0.208-0.501-0.501V9.883
+		c0-0.292,0.24-0.501,0.501-0.501c0.086,0,0.174,0.023,0.256,0.072l3.528,2.117c0.324,0.194,0.324,0.663,0,0.857l-3.528,2.117
+		C10.675,14.595,10.587,14.618,10.501,14.618L10.501,14.618z"/>
+</g>
+</svg>
+            </div>
+            Shorts
+        </h1>
+        <p class="platform-section-count">6 Collaborations</p>
+    </div>
+    
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">1</span>
+                <span>Fede dunkea a Mrbeast 😈</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> Fede dunks on MrBeast 😈
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/YZ7gOQ8piWHJELvXxq0p2rIb942UdvBCy27y6DwTxE2-t_y7Iemd4vM17QmLMJra82s5gxzlL_s=s800-c-k-c0x00ffffff-no-rj" alt="Fede profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Fede</span>
+                        
+                        <span class="subscriber-count">67.5M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe width="100%" src="https://www.youtube.com/embed/kybYohZPPHY" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                <div class="platform-breakdown">
+                    <h3>Platform Breakdown</h3>
+                    <table class="breakdown-table">
+                        <thead>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Views</th>
+                                <th>Likes</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                <td>
+                                    <div class="breakdown-platform-cell">
+                                        <div class="breakdown-platform-icon">
+                                            <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 xml:space="preserve">
+<g>
+	<path d="M7.25,22C5.458,22,4,20.542,4,18.75c0-1.229,0.686-2.342,1.789-2.903l3.241-1.429c0.14,0.684,0.746,1.2,1.471,1.2
+		c0.271,0,0.537-0.074,0.771-0.215l3.527-2.117c0.456-0.273,0.729-0.754,0.729-1.286s-0.272-1.013-0.729-1.286l-3.527-2.117
+		c-0.233-0.141-0.5-0.215-0.771-0.215C9.673,8.382,9,9.056,9,9.883v3.972l-2.313-0.405C5.13,13.177,4,11.831,4,10.25
+		c0-1.209,0.667-2.311,1.74-2.875l9.45-4.976C15.682,2.132,16.201,2,16.75,2C18.542,2,20,3.458,20,5.25
+		c0,1.229-0.686,2.342-1.789,2.903l-4.146,1.828l3.247,0.569C18.87,10.823,20,12.169,20,13.75c0,1.24-0.724,2.39-1.844,2.929
+		L8.81,21.601C8.321,21.868,7.803,22,7.25,22z"/>
+	<path d="M16.75,3C17.991,3,19,4.009,19,5.25c0,0.836-0.459,1.594-1.2,1.991l-1.121,0.494L13.854,8.98l-2.067-1.24
+		c-0.389-0.234-0.834-0.357-1.286-0.357C9.122,7.382,8,8.504,8,9.883v2.782l-1.139-0.2C5.783,12.276,5,11.344,5,10.25
+		c0-0.836,0.462-1.599,1.207-1.99l9.476-4.989C16.012,3.091,16.371,3,16.75,3 M16.461,11.416l0.679,0.119
+		C18.217,11.724,19,12.656,19,13.75c0,0.859-0.501,1.655-1.276,2.027l-0.033,0.016l-0.032,0.017l-9.347,4.922
+		C7.989,20.91,7.632,21,7.25,21C6.009,21,5,19.991,5,18.75c0-0.836,0.459-1.594,1.2-1.991l1.121-0.494l1.255-0.553
+		c0.459,0.553,1.151,0.905,1.925,0.905c0.452,0,0.896-0.123,1.285-0.357l3.528-2.117c0.76-0.456,1.214-1.257,1.214-2.144
+		C16.528,11.8,16.505,11.604,16.461,11.416 M16.75,1c-0.73,0-1.42,0.185-2.025,0.515L5.275,6.49C3.925,7.2,3,8.62,3,10.25
+		c0,2.095,1.52,3.835,3.515,4.185l-1.18,0.52C3.95,15.66,3,17.095,3,18.75C3,21.095,4.905,23,7.25,23
+		c0.735,0,1.425-0.185,2.025-0.515l9.315-4.905c1.425-0.685,2.41-2.145,2.41-3.83c0-2.095-1.52-3.835-3.515-4.185l1.18-0.52
+		C20.05,8.34,21,6.905,21,5.25C21,2.905,19.095,1,16.75,1L16.75,1z M10.501,14.618c-0.261,0-0.501-0.208-0.501-0.501V9.883
+		c0-0.292,0.24-0.501,0.501-0.501c0.086,0,0.174,0.023,0.256,0.072l3.528,2.117c0.324,0.194,0.324,0.663,0,0.857l-3.528,2.117
+		C10.675,14.595,10.587,14.618,10.501,14.618L10.501,14.618z"/>
+</g>
+</svg>
+                                        </div>
+                                        Shorts
+                                    </div>
+                                </td>
+                                <td>12.3M</td>
+                                <td>259.5K</td>
+                                <td>6.6K</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="breakdown-platform-cell">
+                                        <div class="breakdown-platform-icon">
+                                            <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+<path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="currentColor"/>
+</svg>
+                                        </div>
+                                        Instagram
+                                    </div>
+                                </td>
+                                <td>14M</td>
+                                <td>628K</td>
+                                <td>2.3K</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="breakdown-platform-cell">
+                                        <div class="breakdown-platform-icon">
+                                            <svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,2H3A1,1,0,0,0,2,3V21a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2Zm-3.281,8.725h0c-.109.011-.219.016-.328.017A3.571,3.571,0,0,1,14.4,9.129v5.493a4.061,4.061,0,1,1-4.06-4.06c.085,0,.167.008.251.013v2a2.067,2.067,0,1,0-.251,4.119A2.123,2.123,0,0,0,12.5,14.649l.02-9.331h1.914A3.564,3.564,0,0,0,17.719,8.5Z"/></svg>
+                                        </div>
+                                        TikTok
+                                    </div>
+                                </td>
+                                <td>26M</td>
+                                <td>2.2M</td>
+                                <td>16K</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: April 28, 2025</div>
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                        
+                        <a href="https://www.tiktok.com/@fedevigevani/video/7497270165579517192?is_from_webapp=1&sender_device=pc&web_id=7506517301627405880" target="_blank" class="watch-on-btn">
+                            <div class="watch-on-icon">
+                                <svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,2H3A1,1,0,0,0,2,3V21a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2Zm-3.281,8.725h0c-.109.011-.219.016-.328.017A3.571,3.571,0,0,1,14.4,9.129v5.493a4.061,4.061,0,1,1-4.06-4.06c.085,0,.167.008.251.013v2a2.067,2.067,0,1,0-.251,4.119A2.123,2.123,0,0,0,12.5,14.649l.02-9.331h1.914A3.564,3.564,0,0,0,17.719,8.5Z"/></svg>
+                            </div>
+                            Watch on TikTok
+                        </a>
+                        
+                        <a href="https://www.instagram.com/reel/DI39s_IxnVr/" target="_blank" class="watch-on-btn">
+                            <div class="watch-on-icon">
+                                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+<path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="currentColor"/>
+</svg>
+                            </div>
+                            Watch on Instagram
+                        </a>
+                        
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">52.3M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">3.1M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">24.9K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">2</span>
+                <span>Qué youtubers debería invitar?</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> Which YouTubers should I invite?
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/YZ7gOQ8piWHJELvXxq0p2rIb942UdvBCy27y6DwTxE2-t_y7Iemd4vM17QmLMJra82s5gxzlL_s=s800-c-k-c0x00ffffff-no-rj" alt="MrBeast profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">MrBeast</span>
+                        
+                        <span class="subscriber-count">67.5M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe width="100%" src="https://www.youtube.com/embed/BmclUqEe100" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                <div class="platform-breakdown">
+                    <h3>Platform Breakdown</h3>
+                    <table class="breakdown-table">
+                        <thead>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Views</th>
+                                <th>Likes</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                <td>
+                                    <div class="breakdown-platform-cell">
+                                        <div class="breakdown-platform-icon">
+                                            <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+	 xml:space="preserve">
+<g>
+	<path d="M7.25,22C5.458,22,4,20.542,4,18.75c0-1.229,0.686-2.342,1.789-2.903l3.241-1.429c0.14,0.684,0.746,1.2,1.471,1.2
+		c0.271,0,0.537-0.074,0.771-0.215l3.527-2.117c0.456-0.273,0.729-0.754,0.729-1.286s-0.272-1.013-0.729-1.286l-3.527-2.117
+		c-0.233-0.141-0.5-0.215-0.771-0.215C9.673,8.382,9,9.056,9,9.883v3.972l-2.313-0.405C5.13,13.177,4,11.831,4,10.25
+		c0-1.209,0.667-2.311,1.74-2.875l9.45-4.976C15.682,2.132,16.201,2,16.75,2C18.542,2,20,3.458,20,5.25
+		c0,1.229-0.686,2.342-1.789,2.903l-4.146,1.828l3.247,0.569C18.87,10.823,20,12.169,20,13.75c0,1.24-0.724,2.39-1.844,2.929
+		L8.81,21.601C8.321,21.868,7.803,22,7.25,22z"/>
+	<path d="M16.75,3C17.991,3,19,4.009,19,5.25c0,0.836-0.459,1.594-1.2,1.991l-1.121,0.494L13.854,8.98l-2.067-1.24
+		c-0.389-0.234-0.834-0.357-1.286-0.357C9.122,7.382,8,8.504,8,9.883v2.782l-1.139-0.2C5.783,12.276,5,11.344,5,10.25
+		c0-0.836,0.462-1.599,1.207-1.99l9.476-4.989C16.012,3.091,16.371,3,16.75,3 M16.461,11.416l0.679,0.119
+		C18.217,11.724,19,12.656,19,13.75c0,0.859-0.501,1.655-1.276,2.027l-0.033,0.016l-0.032,0.017l-9.347,4.922
+		C7.989,20.91,7.632,21,7.25,21C6.009,21,5,19.991,5,18.75c0-0.836,0.459-1.594,1.2-1.991l1.121-0.494l1.255-0.553
+		c0.459,0.553,1.151,0.905,1.925,0.905c0.452,0,0.896-0.123,1.285-0.357l3.528-2.117c0.76-0.456,1.214-1.257,1.214-2.144
+		C16.528,11.8,16.505,11.604,16.461,11.416 M16.75,1c-0.73,0-1.42,0.185-2.025,0.515L5.275,6.49C3.925,7.2,3,8.62,3,10.25
+		c0,2.095,1.52,3.835,3.515,4.185l-1.18,0.52C3.95,15.66,3,17.095,3,18.75C3,21.095,4.905,23,7.25,23
+		c0.735,0,1.425-0.185,2.025-0.515l9.315-4.905c1.425-0.685,2.41-2.145,2.41-3.83c0-2.095-1.52-3.835-3.515-4.185l1.18-0.52
+		C20.05,8.34,21,6.905,21,5.25C21,2.905,19.095,1,16.75,1L16.75,1z M10.501,14.618c-0.261,0-0.501-0.208-0.501-0.501V9.883
+		c0-0.292,0.24-0.501,0.501-0.501c0.086,0,0.174,0.023,0.256,0.072l3.528,2.117c0.324,0.194,0.324,0.663,0,0.857l-3.528,2.117
+		C10.675,14.595,10.587,14.618,10.501,14.618L10.501,14.618z"/>
+</g>
+</svg>
+                                        </div>
+                                        Shorts
+                                    </div>
+                                </td>
+                                <td>8.1M</td>
+                                <td>364.5K</td>
+                                <td>27.8K</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="breakdown-platform-cell">
+                                        <div class="breakdown-platform-icon">
+                                            <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+<path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="currentColor"/>
+</svg>
+                                        </div>
+                                        Instagram
+                                    </div>
+                                </td>
+                                <td>23M</td>
+                                <td>500K</td>
+                                <td>15K</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="breakdown-platform-cell">
+                                        <div class="breakdown-platform-icon">
+                                            <svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,2H3A1,1,0,0,0,2,3V21a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2Zm-3.281,8.725h0c-.109.011-.219.016-.328.017A3.571,3.571,0,0,1,14.4,9.129v5.493a4.061,4.061,0,1,1-4.06-4.06c.085,0,.167.008.251.013v2a2.067,2.067,0,1,0-.251,4.119A2.123,2.123,0,0,0,12.5,14.649l.02-9.331h1.914A3.564,3.564,0,0,0,17.719,8.5Z"/></svg>
+                                        </div>
+                                        TikTok
+                                    </div>
+                                </td>
+                                <td>21M</td>
+                                <td>2.2M</td>
+                                <td>40K</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: March 30, 2025</div>
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                        
+                        <a href="https://www.instagram.com/reel/DH1Fd1zxlXz/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="watch-on-btn">
+                            <div class="watch-on-icon">
+                                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+<path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="currentColor"/>
+</svg>
+                            </div>
+                            Watch on Instagram
+                        </a>
+                        
+                        <a href="https://www.tiktok.com/@fedevigevani/video/7487644994325482757?is_from_webapp=1&sender_device=pc&web_id=7511744968459126328" target="_blank" class="watch-on-btn">
+                            <div class="watch-on-icon">
+                                <svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,2H3A1,1,0,0,0,2,3V21a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2Zm-3.281,8.725h0c-.109.011-.219.016-.328.017A3.571,3.571,0,0,1,14.4,9.129v5.493a4.061,4.061,0,1,1-4.06-4.06c.085,0,.167.008.251.013v2a2.067,2.067,0,1,0-.251,4.119A2.123,2.123,0,0,0,12.5,14.649l.02-9.331h1.914A3.564,3.564,0,0,0,17.719,8.5Z"/></svg>
+                            </div>
+                            Watch on TikTok
+                        </a>
+                        
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">52.1M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">3.1M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">82.8K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">3</span>
+                <span>Descubrí el SECRETO de MR BEAST!😱</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> I discovered MR BEAST's SECRET!😱
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/ytc/AIdro_k8J6G7YNjz-jjmUjGohtx8PiRUL19BhcFjEwgHs_-W55k=s800-c-k-c0x00ffffff-no-rj" alt="Ian profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Ian</span>
+                        
+                        <span class="subscriber-count">37.3M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe width="100%" src="https://www.youtube.com/embed/7zdWO9rATeU" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: March 31, 2025</div>
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">3.7M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">138.7K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">778</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">4</span>
+                <span>El Mejor Jugador De BALONCESTO DEL MUNDO ☄️</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> The Best Basketball Player in the World ☄️
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/vOsrLzWD4z1dbr470nEXydi3Kb55jW6YqcpQiq1LHyj9IvElga7zBHEfqFZvC26BRKmQimEbiA=s800-c-k-c0x00ffffff-no-rj" alt="German profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">German</span>
+                        
+                        <span class="subscriber-count">53.4M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe width="100%" src="https://www.youtube.com/embed/Z0uYcnBTTzc" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: April 25, 2025</div>
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">3.6M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">136.0K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">3.5K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">5</span>
+                <span>Este Juego Es IMPOSIBLE</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> This Game Is IMPOSSIBLE
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/vOsrLzWD4z1dbr470nEXydi3Kb55jW6YqcpQiq1LHyj9IvElga7zBHEfqFZvC26BRKmQimEbiA=s800-c-k-c0x00ffffff-no-rj" alt="German profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">German</span>
+                        
+                        <span class="subscriber-count">53.4M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe width="100%" src="https://www.youtube.com/embed/B0ZPiO3aKNw" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: April 29, 2025</div>
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">1.6M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">65.0K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">729</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">6</span>
+                <span>Así Se Hace un Vídeo de MrBeast</span>
+            </h1>
+            
+            <div class="video-title-translation">
+                <span class="translation-label">Translation:</span> How a MrBeast Video is Made
+            </div>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/alZ--DxDJfYQLF9UZ7s8q2tytDyFniBoj0-8bH27Ew5QTX5o3ultBNmfJmFqc05V2Wax-nkFKX8=s800-c-k-c0x00ffffff-no-rj" alt="Ibai profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Ibai</span>
+                        
+                        <span class="subscriber-count">13.1M subscribers</span>
+                        
+                    </div>
+                    <span class="platform-badge">YouTube</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe width="100%" src="https://www.youtube.com/embed/qoLJrDCAC3Y" frameborder="0" allowfullscreen></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    <div class="publish-date">Published: May 13, 2025</div>
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">669.0K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">20.9K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">58</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- Platform section slide -->
+    <div class="platform-section-slide instagram">
+        <h1 class="platform-section-title">
+            <div class="platform-section-icon">
+                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+<path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="currentColor"/>
+</svg>
+            </div>
+            Instagram
+        </h1>
+        <p class="platform-section-count">7 Collaborations</p>
+    </div>
+    
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">1</span>
+                <span>Reel by MrBeast</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/nxYrc_1_2f77DoBadyxMTmv7ZpRZapHR5jbuYe7PlPd5cIRJxtNNEYyOC0ZsxaDyJJzXrnJiuDE=s88-c-k-c0x00ffffff-no-rj" alt="MrBeast profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">MrBeast</span>
+                        
+                        <span class="subscriber-count">73,600,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">Instagram</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe src="https://www.instagram.com/p/DH6N2p3R6WU/embed" width="400" height="480" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Reel</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">24M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">440K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">5K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">2</span>
+                <span>Post by German</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/vOsrLzWD4z1dbr470nEXydi3Kb55jW6YqcpQiq1LHyj9IvElga7zBHEfqFZvC26BRKmQimEbiA=s800-c-k-c0x00ffffff-no-rj" alt="German profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">German</span>
+                        
+                        <span class="subscriber-count">18,000,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">Instagram</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe src="https://www.instagram.com/p/DB92MyGpf_4/embed" width="400" height="480" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Post</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">1.3M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">3.7K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">3</span>
+                <span>Post by Ian</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/ytc/AIdro_k8J6G7YNjz-jjmUjGohtx8PiRUL19BhcFjEwgHs_-W55k=s800-c-k-c0x00ffffff-no-rj" alt="Ian profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Ian</span>
+                        
+                        <span class="subscriber-count">5,300,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">Instagram</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe src="https://www.instagram.com/p/DI46YfLAx9a/embed" width="400" height="480" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Post</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">330K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">1.5K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">4</span>
+                <span>Post by MrBeast</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/nxYrc_1_2f77DoBadyxMTmv7ZpRZapHR5jbuYe7PlPd5cIRJxtNNEYyOC0ZsxaDyJJzXrnJiuDE=s88-c-k-c0x00ffffff-no-rj" alt="MrBeast profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">MrBeast</span>
+                        
+                        <span class="subscriber-count">73,600,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">Instagram</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe src="https://www.instagram.com/p/DI4daJLRlKd/embed" width="400" height="480" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Post</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">1.1M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">7.5K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">5</span>
+                <span>Post by Fede</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/YZ7gOQ8piWHJELvXxq0p2rIb942UdvBCy27y6DwTxE2-t_y7Iemd4vM17QmLMJra82s5gxzlL_s=s800-c-k-c0x00ffffff-no-rj" alt="Fede profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Fede</span>
+                        
+                        <span class="subscriber-count">11,100,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">Instagram</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><iframe src="https://www.instagram.com/p/DI45i8SsTrR/embed" width="400" height="480" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Post</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">549K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">3.8K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- Platform section slide -->
+    <div class="platform-section-slide tiktok">
+        <h1 class="platform-section-title">
+            <div class="platform-section-icon">
+                <svg fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,2H3A1,1,0,0,0,2,3V21a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2Zm-3.281,8.725h0c-.109.011-.219.016-.328.017A3.571,3.571,0,0,1,14.4,9.129v5.493a4.061,4.061,0,1,1-4.06-4.06c.085,0,.167.008.251.013v2a2.067,2.067,0,1,0-.251,4.119A2.123,2.123,0,0,0,12.5,14.649l.02-9.331h1.914A3.564,3.564,0,0,0,17.719,8.5Z"/></svg>
+            </div>
+            TikTok
+        </h1>
+        <p class="platform-section-count">5 Collaborations</p>
+    </div>
+    
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">1</span>
+                <span>Short by MrBeast</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/nxYrc_1_2f77DoBadyxMTmv7ZpRZapHR5jbuYe7PlPd5cIRJxtNNEYyOC0ZsxaDyJJzXrnJiuDE=s88-c-k-c0x00ffffff-no-rj" alt="MrBeast profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">MrBeast</span>
+                        
+                        <span class="subscriber-count">118,000,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">TikTok</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><blockquote class="tiktok-embed" cite="https://www.tiktok.com/@mrbeast/video/7497106533919067422?is_from_webapp=1&sender_device=pc&web_id=7511744968459126328" data-video-id="7497106533919067422" style="max-width: 605px;min-width: 325px;"><section></section></blockquote><script async src="https://www.tiktok.com/embed.js"></script></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">49M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">2M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">100K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">2</span>
+                <span>Short by Ibai</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/alZ--DxDJfYQLF9UZ7s8q2tytDyFniBoj0-8bH27Ew5QTX5o3ultBNmfJmFqc05V2Wax-nkFKX8=s800-c-k-c0x00ffffff-no-rj" alt="Ibai profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Ibai</span>
+                        
+                        <span class="subscriber-count">22,000,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">TikTok</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ibaillanos/video/7498734471710215426?is_from_webapp=1&sender_device=pc&web_id=7511744968459126328" data-video-id="7498734471710215426" style="max-width: 605px;min-width: 325px;"><section></section></blockquote><script async src="https://www.tiktok.com/embed.js"></script></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">11M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">1.5M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">2K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="slide">
+        <div class="slide-header">
+            <h1 class="video-title">
+                <span class="collab-number">3</span>
+                <span>Short by Fede</span>
+            </h1>
+            
+            <div class="creator-info-box">
+                <div class="creator-info">
+                    <img class="profile-pic" src="https://yt3.ggpht.com/YZ7gOQ8piWHJELvXxq0p2rIb942UdvBCy27y6DwTxE2-t_y7Iemd4vM17QmLMJra82s5gxzlL_s=s800-c-k-c0x00ffffff-no-rj" alt="Fede profile picture">
+                    <div class="creator-details">
+                        <span class="creator-name">Fede</span>
+                        
+                        <span class="subscriber-count">28,000,000 followers</span>
+                        
+                    </div>
+                    <span class="platform-badge">TikTok</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="video-section">
+                
+                <div class="embed embed-vertical"><blockquote class="tiktok-embed" cite="https://www.tiktok.com/@fedevigevani/video/7497725524148604167?is_from_webapp=1&sender_device=pc&web_id=7511744968459126328" data-video-id="7497725524148604167" style="max-width: 605px;min-width: 325px;"><section></section></blockquote><script async src="https://www.tiktok.com/embed.js"></script></div>
+                
+                
+                
+                
+                <div class="video-meta">
+                    
+                    
+                    <div class="content-type">Short</div>
+                    
+                    
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Views</div>
+                    <div class="stat-value">9.4M</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Likes</div>
+                    <div class="stat-value">890K</div>
+                </div>
+                
+                
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Comments</div>
+                    <div class="stat-value">18K</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <div class="download-section">
+        <a class="download-btn" href="javascript:window.print()">Download PDF</a>
+    </div>
+</body>
+</html>
