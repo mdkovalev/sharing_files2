@@ -15,65 +15,14 @@
             line-height: 1.5;
         }
         .slide {
-            /* Standard 16:9 slide size, scalable for web and print */
-            width: 1280px;
-            height: 720px;
-            max-width: 100vw;
-            max-height: 100vh;
-            aspect-ratio: 16 / 9;
-            margin: 0 auto 40px auto;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-bottom: 1px solid #e2e8f0;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 48px 64px;
-            position: relative;
-            overflow: hidden;
-            page-break-after: always; /* For print/PDF: each slide on a new page */
-            break-after: page;
-        }
-        @media (max-width: 1400px) {
-            .slide {
-                width: 100vw;
-                height: calc(100vw * 9 / 16);
-                padding: 24px 8vw;
-            }
-        }
-        @media (max-width: 900px) {
-            .slide {
-                width: 100vw;
-                height: auto;
-                min-height: 60vw;
-                padding: 12px 2vw;
-            }
-        }
-        /* Print styles for slide export */
-        @media print {
-            body {
-                background: white !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            .slide {
-                width: 100vw !important;
-                height: 100vh !important;
-                max-width: 100vw !important;
-                max-height: 100vh !important;
-                border-radius: 0 !important;
-                box-shadow: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                page-break-after: always !important;
-                break-after: page !important;
-                overflow: hidden !important;
-                position: relative !important;
-            }
-            .download-section, .opening-slide, .platform-section-slide {
-                page-break-after: always !important;
-                break-after: page !important;
-            }
         }
         .slide-header {
             text-align: left;
@@ -950,7 +899,7 @@
             </h1>
             
             <div class="video-title-translation">
-                <span class="translation-label">Translation:</span> Spanish-speaking vs United States 🏀
+                <span class="translation-label">Translation:</span> SPANISH SPEAKING VS UNITED STATES 🏀
             </div>
             
             <div class="creator-info-box">
